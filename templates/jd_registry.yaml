@@ -1,0 +1,25 @@
+# JD Registry — the join table between an application, its posting, and its documents.
+#
+# WHY THIS EXISTS: job-description links live in chat scrollback and then vanish,
+# and generated filenames don't obviously map to tracker rows. This file relates
+# the three. Add a row whenever an application goes out.
+#
+#   match  — the company name exactly as it appears in APPLICATIONS.md.
+#            This is the key the dashboard joins on.
+#   role   — human-readable title.
+#   docs   — shared filename stem, i.e. output/resumes/<prefix><stem>.pdf
+#            and output/cover_letters/<prefix><stem>_CoverLetter.pdf
+#   jd     — the live posting URL.
+#   saved  — optional path to a local copy of the JD text. Capture this:
+#            postings get taken down, and you will want the exact wording
+#            when you prepare for the interview three weeks later.
+#
+# Missing fields degrade gracefully — a row with no `jd` renders without a link.
+
+applications:
+  # - match: "Acme Corp"
+  #   role:  "Senior Platform Engineer"
+  #   docs:  "AcmeCorp_SeniorPlatformEngineer"
+  #   jd:    "https://job-boards.greenhouse.io/acme/jobs/1234567"
+  #   saved: "source/jobs/AcmeCorp_SeniorPlatformEngineer.md"
+  []

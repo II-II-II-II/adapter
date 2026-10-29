@@ -1,0 +1,76 @@
+# Company watchlist for the job scanner.
+#
+# STARTS EMPTY ON PURPOSE. Build it as you go — a list of companies you'd
+# genuinely work for is worth more than a long list someone else assembled,
+# and the act of adding each one forces you to decide whether you mean it.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# WHY THIS FILE IS THE BEST SOURCE YOU HAVE
+#
+# This hits companies' own applicant-tracking boards directly. That means:
+#   · postings appear here before they reach aggregators
+#   · no scraping, no terms-of-service risk — these are public JSON endpoints
+#   · far less competition than anything that has reached a job board
+#
+# Aggregators give you volume. This gives you signal. Add to it every time you
+# find a company you'd say yes to.
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# FORMAT
+#   - {name: "Display Name", ats: greenhouse, slug: theslug, tags: [tag, tag]}
+#
+#   ats:   greenhouse | lever | ashby | bamboohr
+#   slug:  the company's board identifier (see below)
+#   tags:  freeform, yours. Used for grouping output, nothing else.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# HOW TO FIND A SLUG
+#
+# Find any job posting at the company, look at the URL, and read off the
+# identifier:
+#
+#   GREENHOUSE   job-boards.greenhouse.io/SLUG/jobs/123456
+#                boards.greenhouse.io/SLUG
+#                  verify: curl -s "https://boards-api.greenhouse.io/v1/boards/SLUG/jobs"
+#
+#   LEVER        jobs.lever.co/SLUG/uuid
+#                  verify: curl -s "https://api.lever.co/v0/postings/SLUG?mode=json"
+#
+#   ASHBY        jobs.ashbyhq.com/SLUG
+#                  verify: curl -s "https://api.ashbyhq.com/posting-api/job-board/SLUG"
+#
+#   BAMBOOHR     SLUG.bamboohr.com/careers
+#                  verify: curl -s "https://SLUG.bamboohr.com/careers/list"
+#
+# A company's careers page often redirects to one of these — follow the
+# redirect and the slug is in the final URL. If the careers page is Workday or
+# ADP instead, the scanner can't watch it, but docs/JD_RECOVERY.md shows how to
+# pull individual postings from those by hand.
+#
+# Verify everything you add in one pass:
+#   python3 source/job_scout.py --verify
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# HOW TO GROW IT — three habits that work
+#
+# 1. GROUP BY PROBLEM SHAPE, NOT INDUSTRY LABEL. If your background is device
+#    fleets and edge deployment, then telematics, industrial IoT, logistics and
+#    physical-security companies are all one cluster to you, whatever sector
+#    they file themselves under.
+#
+# 2. MINE YOUR TARGETS' CUSTOMERS. Whoever your target companies sell to has
+#    the same problems from the other side of the table, and usually hires for
+#    them. This roughly doubles a list.
+#
+# 3. ADD EVERY COMPANY THAT REACHES A REAL CONVERSATION — including the ones
+#    that reject you. A company that interviewed you once will post something
+#    else, and a recruiter who liked you is a warm channel months later.
+#
+# ⚠️ ONE CAUTION: if you left a job under a severance or non-compete agreement,
+#    have it reviewed before adding your former employer's direct competitors.
+#    This is the easiest place to forget that constraint, because those are
+#    exactly the companies where your experience fits best.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# - {name: "Example Co", ats: greenhouse, slug: examplecio, tags: [infra, remote]}
+[]

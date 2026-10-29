@@ -1,0 +1,26 @@
+# Core — everything except transcription.
+requests>=2.31
+PyYAML>=6.0
+markdown>=3.5
+weasyprint>=60.0          # PDF rendering
+
+# Optional: Gmail / Calendar reading. Skip if you don't want email access.
+google-api-python-client>=2.100
+google-auth-httplib2>=0.2
+google-auth-oauthlib>=1.2
+
+# Optional: MCP server for scoped assistant tools
+mcp>=1.0.0
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TRANSCRIPTION IS NOT LISTED HERE ON PURPOSE.
+#
+# The right package depends on your hardware, and installing the wrong one
+# wastes a multi-gigabyte download:
+#
+#   Apple Silicon   pip install mlx-whisper      (Apple GPU)
+#   NVIDIA GPU      pip install faster-whisper   (CUDA)
+#   anything else   pip install faster-whisper   (CPU, slower)
+#
+# ./setup.sh detects your hardware and installs the right one. Use it.
+# ─────────────────────────────────────────────────────────────────────────────

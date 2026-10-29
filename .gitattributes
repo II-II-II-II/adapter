@@ -1,0 +1,11 @@
+# Windows launchers must keep CRLF endings. cmd.exe mis-parses multi-line
+# blocks in a .bat file that arrives with bare LF, and the failure looks
+# like a missing file rather than a line-ending problem.
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+# Everything else: normal LF.
+*.sh  text eol=lf
+*.py  text eol=lf
+*.md  text eol=lf
+*.yaml text eol=lf

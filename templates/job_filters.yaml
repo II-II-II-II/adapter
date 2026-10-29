@@ -1,0 +1,276 @@
+# Job Scout filter config — tune freely, no code changes needed.
+# Run: python3 source/job_scout.py
+
+freshness:
+  max_age_days: 14          # skip postings older than this
+  # NOTE: Greenhouse reports last-modified, not posted date. Treat GH ages as noisy.
+
+location:
+  remote_required: true
+  remote_patterns:          # explicit remote signal -> accept
+    - "remote"
+    - "anywhere"
+    - "distributed"
+    - "work from home"
+    - "wfh"
+  ambiguous_patterns:       # country-level only (no city) -> accept but flag to verify
+    - "united states"
+    - "usa"
+    - "u.s."
+    - "us"
+    - "nationwide"
+  also_accept_local:        # non-remote OK only if location matches these
+    # Put your own metro here, lowercase. Add nearby suburbs the postings
+    # actually name -- a job listed in a suburb won't match the city.
+    - "your city"
+  reject_patterns:          # kill even if an accept pattern matched
+    - "canada"
+    - "toronto"
+    - "vancouver"
+    - "emea"
+    - "apac"
+    - "united kingdom"
+    - "london"
+    - "warsaw"
+    - "poland"
+    - "india"
+    - "bengaluru"
+    - "netherlands"
+    - "switzerland"
+    - "germany"
+    - "ireland"
+    - "dublin"
+    - "australia"
+    - "sydney"
+    - "melbourne"
+    - "singapore"
+    - "japan"
+    - "tokyo"
+    - "korea"
+    - "brazil"
+    - "mexico"
+    - "israel"
+    - "tel aviv"
+
+level:
+  min_salary_max: 120000    # if a max salary IS posted and falls below this, drop
+                            # SET THIS TO YOUR OWN FLOOR. Postings with no salary
+                            # posted are never dropped on comp — only ones that
+                            # publish a ceiling beneath your number.
+  min_years_required: 4     # if the JD asks for fewer years than this, it's junior-coded -> drop
+  max_years_required: 15    # if it demands more than this, flag (don't drop)
+  reject_title_patterns:
+    - "intern"
+    - "internship"
+    - "junior"
+    - "entry level"
+    - "new grad"
+    - "apprentice"
+    - "co-op"
+    - "associate engineer"
+    - "engineer i$"
+    - "engineer ii$"
+    - "analyst i$"
+
+keywords:
+  strong:                   # 3 points each
+    - "agentic"
+    - "mcp"
+    - "model context protocol"
+    - "llm"
+    - "rag"
+    - "retrieval-augmented"
+    - "iot"
+    - "telemetry"
+    - "edge inference"
+    - "solutions architect"
+    - "implementation engineer"
+    - "forward deployed"
+    - "deployment engineer"
+    - "sensor"
+    - "firmware"
+    - "embedded"
+    - "systems engineer"
+    - "systems engineering"
+    - "infrastructure engineer"
+    - "connected device"
+    - "fleet"
+    - "device management"
+    - "industrial"
+    - "hardware"
+    - "edge computing"
+    - "computer vision"
+    # Pre-sales signal, added Aug 27.
+    - "pre-sales"
+    - "presales"
+    - "sales engineer"
+    - "customer-facing"
+    - "technical demo"
+    - "proof of concept"
+    - "discovery call"
+  good:                     # 1 point each
+    - "infrastructure"
+    - "security"
+    - "saml"
+    - "sso"
+    - "terraform"
+    - "ansible"
+    - "observability"
+    - "integration"
+    - "python"
+    - "docker"
+    - "platform"
+    - "architect"
+    - "product owner"
+    - "jira"
+    - "linux"
+    - "networking"
+    - "deployment"
+    - "on-premise"
+    - "mqtt"
+    - "raspberry pi"
+    - "provisioning"
+  disqualifying:            # any hit = drop
+    - "security clearance"
+    - "ts/sci"
+    - "top secret"
+    - "polygraph"
+    - "must relocate"
+    - "relocation is required"
+    - "c2c"
+    - "corp to corp"
+
+# Companies Ian will not work for, matched against company name.
+excluded_companies:
+  # Companies or sectors you will not apply to, matched as lowercase substrings
+  # against the company name. Keep this honest and keep it short — every entry
+  # is a door you are closing on purpose.
+  #
+  # Reasons people use this: an industry they won't work in, a former employer,
+  # a company that has already rejected them repeatedly, or a sector whose
+  # security clearance or drug-testing requirements rule them out.
+  #
+  # EXAMPLES — delete these and write your own:
+  # - "example defense prime"
+  # - "former employer inc"
+  []
+
+
+# NOTE ON EXCLUSIONS: a list like the one above targets whole *sectors*. A commercial
+# company that merely has a customer in that sector is NOT auto-excluded — that
+# judgment stays with you. Add specific names here if you want it harder.
+
+scoring:
+  min_score_to_surface: 4
+  max_results_per_run: 25
+  max_per_company: 3        # stop one large board flooding the shortlist
+
+output:
+  directory: "output/scout"
+  dedupe_against: "APPLICATIONS.md"
+  seen_cache: "source/.scout_seen.json"
+
+# ---------------------------------------------------------------- Jobicy
+# Breadth source #2, added Sep 4 2026. A real JSON API, not a scrape — it returns
+# the true posted date, structured salaryMin/salaryMax, and the FULL job
+# description, so freshness, the salary floor and jd_flag all work on the first
+# pass with no follow-up fetch.
+#
+# Picked on measured yield against Ian's converting titles (solutions architect /
+# sales engineer / forward deployed / applied AI):
+#   Jobicy    7 hits per 100 postings  <- including a Forward Deployed Engineer req
+#   Remotive  1 per 18
+#   RemoteOK  1 per 100
+#   The Muse  0 per 60   (skews general corporate; not worth wiring up)
+# Adzuna was considered and skipped: its API returns a truncated snippet rather
+# than the full JD, which defeats screening both directions.
+jobicy:
+  enabled: true
+  geo: usa                  # 'usa' | 'anywhere' | country slug
+  count: 200                # bare pull; API honoured 200 in testing
+  tags:                     # optional server-side narrowing, one request each
+    - solutions architect
+    - solutions engineer
+    - sales engineer
+    - forward deployed
+    - applied ai
+    - ai engineer
+    - technical account manager
+    - infrastructure engineer
+
+# ---------------------------------------------------------------- BuiltIn
+# Breadth source. The watchlist covers a handful of companies deeply; BuiltIn
+# reaches companies that will never be on a curated list. Choose search terms
+# that match the framing that actually converts for you (see
+# source/role_framing.yaml) rather than your skills — skill searches return
+# Software Engineer reqs, which for many people are the ones that reject them.
+# Edit freely.
+builtin:
+  enabled: true
+  path: /jobs/remote        # use /jobs for all locations, not just remote
+  searches:
+    - forward deployed engineer
+    - solutions engineer
+    - solutions architect
+    - integration engineer
+    - implementation engineer
+    - deployment engineer
+    - technical account manager
+    - iot platform
+    - field application engineer
+    - solutions consultant
+    - technical consultant
+    - customer success engineer
+    - professional services engineer
+    - delivery engineer
+    - enterprise architect
+    - infrastructure engineer
+    - platform engineer
+    - site reliability engineer
+    - presales engineer
+    - sales engineer
+    - systems integration engineer
+    - edge computing
+    - telemetry platform
+    - ai solutions architect
+    - ai solutions engineer
+    - ai infrastructure engineer
+    - ai platform engineer
+    - applied ai engineer
+    - agentic
+    - ai enablement
+    - forward deployed
+    # Pre-sales and solutions titles. Worth adding if your record shows these
+    # convert for you — they tend to screen on customer-facing years rather
+    # than on a coding gate.
+    - enterprise systems engineer
+    - principal solutions engineer
+    - staff solutions engineer
+    - solutions engineer ai
+    - technical solutions engineer
+    - partner solutions architect
+    - field solutions engineer
+    - ai sales engineer
+    - specialist solutions architect
+    # Infrastructure, applied AI and technical program management. The shape
+    # these chase: roles that value delivery ownership and systems depth over
+    # coding-gate framing. Add or remove whole blocks as your target shifts —
+    # this file is meant to be edited often.
+    - technical program manager
+    - technical project manager
+    - ai program manager
+    - ai project manager
+    - ai delivery manager
+    - engineering program manager
+    - ai enablement manager
+    - director of ai
+    - head of ai
+    - applied ai architect
+    - applied ai lead
+    - generative ai engineer
+    - genai engineer
+    - llm engineer
+    - ai integration engineer
+    - cloud infrastructure engineer
+    - infrastructure architect
+    - systems architect

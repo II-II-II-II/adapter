@@ -1,0 +1,63 @@
+# ─── YOUR DATA. Never commit these. ────────────────────────────────────────
+# The templates in templates/ are the shareable versions; the working copies
+# in source/ and the repo root are yours and stay local.
+
+source/master_profile.md
+source/role_framing.yaml
+source/job_filters.yaml
+source/company_watchlist.yaml
+source/jd_registry.yaml
+# Leading slash matters: a bare "APPLICATIONS.md" also matches
+# templates/APPLICATIONS.md and silently keeps the template out of the repo.
+/APPLICATIONS.md
+/INTERVIEWS.md
+
+# Interview recordings and transcripts — other people's voices
+transcripts/
+recordings/
+*.m4a
+*.mp3
+*.wav
+*.aac
+*.flac
+
+# Generated documents
+output/
+*.pdf
+*.render.html
+
+# Saved job descriptions (may be under a site's terms)
+source/jobs/
+
+# Credentials and tokens
+source/gmail_credentials.json
+source/google_token.json
+*credentials*.json
+*token*.json
+.env
+
+# Diagnostic logs. Machine specs and install errors only -- no career
+# content -- but they're this user's run, not something to commit.
+logs/
+
+# Scanner state
+source/.scout_seen.json
+
+# Any prep docs you generate — these name real people
+*_PREP.md
+*_GAMEDAY.md
+*_MOCK*.md
+*_CARD.md
+NOTES*.md
+
+# ─── Standard ──────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+.idea/
+.vscode/
+
+# Hardware backend chosen by setup.sh
+.adapter_backend

@@ -1,0 +1,116 @@
+# Role-framing rules. Edit this file freely — no code changes needed.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# WHAT THIS FILE IS FOR
+#
+# Two postings can describe the same seniority, the same comp and nearly the
+# same work, and screen you completely differently — because the TITLE decides
+# which pile you land in.
+#
+# A posting titled "Senior Software Engineer" counts years spent writing
+# software. One titled "Forward Deployed Engineer" counts years spent standing
+# between customers and systems. If your record is the second kind, the first
+# title rejects you no matter how well the body of the JD fits.
+#
+# This file is where you record which titles advance you and which reject you,
+# so the scanner can score accordingly.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# HOW TO FILL IT IN — derive it, don't guess it
+#
+# Do NOT populate this from intuition about what you'd enjoy. Populate it from
+# your own outcomes, after you have 15–20 applications logged:
+#
+#   1. In your applications log, mark every application with the outcome:
+#      did it produce a human conversation, or did it die with no contact?
+#   2. Group by the TITLE of the posting, not the company or the industry.
+#   3. Look for the phrase that keeps appearing in the rejections.
+#
+# One run of this exercise found a single phrase — "X+ years as a Software
+# Engineer" — behind a run of consecutive rejections, while customer-facing and
+# deployment-flavoured titles advanced to late rounds at similar companies.
+# That took about twenty applications to see, and it was invisible until the
+# outcomes were grouped by title.
+#
+# Your phrase will be different. The method is the transferable part.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# IMPORTANT: the signal is the TITLE, not the JD body.
+#
+# A posting can demand "7+ years of software engineering experience" in its
+# requirements and still be a strong fit if the title is customer-facing. So JD
+# phrases below only ANNOTATE a result with a warning — they never drop it.
+# Titles carry the weight.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+# Titles that have historically ADVANCED you. Score bonus, first match only.
+# Replace the examples with your own. Lowercase substrings, matched on the title.
+title_boost:
+  weight: 8
+  patterns:
+    # ── Customer-facing / deployment flavoured
+    - forward deployed
+    - solutions engineer
+    - solutions architect
+    - solutions consultant
+    - integration engineer
+    - implementation engineer
+    - deployment engineer
+    - field engineer
+    - customer engineer
+    - technical account
+    - professional services
+
+    # ── Infrastructure / platform flavoured
+    - systems engineer
+    - platform engineer
+    - infrastructure engineer
+    - devops engineer
+    - site reliability
+
+    # ── Applied-AI IC titles (as opposed to research-ML titles)
+    - ai engineer
+    - ai solutions
+    - applied ai
+    - ai platform
+    - llm engineer
+
+    # ── Pre-sales / technical sales
+    - presales
+    - pre-sales
+    - technical sales
+    - sales engineer
+    - enterprise architect
+    - principal architect
+    - field cto
+
+
+# Titles that have historically REJECTED you. Subtracted, NOT a hard drop —
+# a very strong match on other signals can still surface.
+title_penalty:
+  weight: -7
+  patterns:
+    # EXAMPLES ONLY. These were right for one person's record and may be
+    # exactly wrong for yours — if your background IS software engineering,
+    # delete these and penalise something else.
+    - software engineer
+    - software developer
+    - research scientist
+    - machine learning scientist
+
+
+# Phrases in the JD BODY that warrant a warning on the result without
+# dropping it. Use this for things you genuinely don't have, so you see the
+# gap before you spend an afternoon on an application.
+jd_flag:
+  label: "JD demands credentials worth checking before applying"
+  patterns:
+    # Replace with your own real gaps. Examples:
+    - "years as a software engineer"
+    - "expert-level python"
+    - kubernetes
+    - "full stack"
+    - typescript
+    - "active clearance"
+    - "ts/sci"
